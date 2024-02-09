@@ -1,21 +1,27 @@
 #!/usr/bin/env python3
 
-from preview import *
-from tiktokvoice import tts
-from uuid import uuid4
-from moviepy.config import change_settings
-from video import *
-from utils import *
-from random import randint
-
-import os
 import requests
 import sys
 import json
 import re
+import os
+
+# Change to main.py dir
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
+from uuid import uuid4
+from moviepy.config import change_settings
+from random import randint
+from config import config
+from tiktokvoice import tts
+from preview import *
+from video import *
+from utils import *
 
 if __name__ == "__main__":
-    response = requests.get("https://teddit.zaggy.nl/r/stories/comments/196l3ak/my_exboyfriend_got_me_a_bottle_of_wine_for_my/?api")
+    response = requests.get(config['TEDDIT_ENDPOINT'])
 
     if (response.status_code != 200):
         print("ERROR: Cound not reach teddit API")
@@ -23,8 +29,9 @@ if __name__ == "__main__":
         
     postData = response.json()
 
-    # title = "My roommate wore three pairs of jeans every single day. The reason behind this ended up making me vomit."
-    title = postData["title"]
+    ## If not specified in config, use data from API
+    title = config['CUSTOM_TITLE'] if config['CUSTOM_TITLE'] != "" else postData["title"]
+    content = config['CUSTOM_CONTENT_PATH'] if config['CUSTOM_CONTENT_PATH'] != "" else postData["selftext"]
 
     # Generating Image preview
     previewPath = genPreview({
@@ -33,32 +40,27 @@ if __name__ == "__main__":
         "{title}": title,
         "{upvotes}": humanFormat(postData["ups"]),
         "{comments_count}": humanFormat(postData["num_comments"])
-    }, True)
-
-    # Get content
-    with open('content.txt', "r") as f:
-        content = f.read()
+    })
 
     # Cleaning post from html and other garbage
     # text = remove_html_tags(postData["selftext"]).strip()
-    text = remove_html_tags(content).strip()
+    text = removeHtmlTags(content).strip()
     sentences = text.replace('\n', '. ').strip().split(".")
     sentences = list(filter(lambda x: x != "", map(lambda x: x.strip(), sentences)))
-    print(sentences)
 
     paths = []
     # Generate TTS for every sentence
     for sentence in sentences:
-        currentTTSPath = f"tmp/{uuid4()}.mp3"
-        tts(sentence, "en_us_007", filename=currentTTSPath)
+        currentTTSPath = f"{config['TEMP_PATH']}/{uuid4()}.mp3"
+        tts(sentence, config['TIKTOK_VOICE'], filename=currentTTSPath)
 
         audioClip = AudioFileClip(currentTTSPath)
         audioClip.audio_fadein(0.01).audio_fadeout(0.01) # Fixing audio glitches occuring every audio clip change
         paths.append(audioClip)
 
     # Creating intro audio
-    introPath = f"tmp/{uuid4()}.mp3"
-    tts(title, "en_us_007", filename=introPath)
+    introPath = f"{config['TEMP_PATH']}/{uuid4()}.mp3"
+    tts(title, config['TIKTOK_VOICE'], filename=introPath)
     introAudio = AudioFileClip(introPath)
     introAudio.audio_fadein(0.01).audio_fadeout(0.01) # For audio glitches
 
@@ -67,12 +69,15 @@ if __name__ == "__main__":
 
     # Adding all audios
     paths.insert(0, introAudio)
-    finalAudioPath = f"tmp/{uuid4()}.mp3"
+    finalAudioPath = f"{config['TEMP_PATH']}/{uuid4()}.mp3"
     finalAudio = concatenate_audioclips(paths)
     finalAudio.write_audiofile(finalAudioPath)
+
+    # Preview as ImageClip
+    previewClip = ImageClip(previewPath).set_start(0).set_duration(introAudio.duration).set_position(("center", "center"))
     
     # Creating cropped clip video
-    clip = VideoFileClip('video.mp4')
+    clip = VideoFileClip(config['BG_VIDEO_PATH'])
     num = randint(10, int(clip.duration - finalAudio.duration - 10))
     clip = clip.subclip(num, num + finalAudio.duration)
 
@@ -83,4 +88,8 @@ if __name__ == "__main__":
     y1, y2 = 0, h
     croppedClip = crop(clip, x1=x1, y1=y1, x2=x2, y2=y2)
 
-    generate_video(croppedClip,ImageClip(previewPath).set_start(0).set_duration(introAudio.duration).set_position(("center", "center")), finalAudioPath, subtitlesPath)
+    generate_video(croppedClip, previewClip, finalAudioPath, subtitlesPath, config['OUTPUT_PATH'] if config['OUTPUT_PATH'] != "" else f"../{title}.mp4")
+
+    # Clean temp afterwards
+    if config['CLEAN_TEMP']:
+        cleanDir(config['TEMP_PATH'])

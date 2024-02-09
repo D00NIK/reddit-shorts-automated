@@ -1,7 +1,18 @@
+import os
+
 from lxml import etree
 from datetime import datetime, timedelta
 
-def remove_html_tags(text):
+def cleanDir(folder: str) -> None:
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+def removeHtmlTags(text):
     parser = etree.HTMLParser()
     tree = etree.fromstring(text, parser)
     return etree.tostring(tree, encoding='unicode', method='text')
@@ -12,6 +23,11 @@ def replaceAll(text: str, dic: dict) -> str:
     for i, j in dic.items():
         text = text.replace(i, j)
     return text
+
+def getFileContent(path: str) -> str:
+    with open(path, "r") as f:
+        data = f.read()
+    return data
 
 def humanFormat(num):
     """Numbers to more readable format, up to 1 milion"""
@@ -34,9 +50,7 @@ def relativeTime(date):
 
     def formatn(n, s):
         """Add "s" if it's plural"""
-
-        print(n, s)
-
+        
         if n == 1:
             return "1 %s" % s
         elif n > 1:

@@ -1,8 +1,7 @@
-import os
 import uuid
-import requests
 import srt_equalizer
 
+from config import config
 from typing import List
 from moviepy.editor import *
 from datetime import timedelta
@@ -10,16 +9,6 @@ from moviepy.video.fx.all import crop
 from moviepy.video.tools.subtitles import SubtitlesClip
 
 def __generate_subtitles_locally(sentences: List[str], audio_clips: List[AudioFileClip], start_time: complex = 0) -> str:
-    """
-    Generates subtitles from a given audio file and returns the path to the subtitles.
-
-    Args:
-        sentences (List[str]): all the sentences said out loud in the audio clips
-        audio_clips (List[AudioFileClip]): all the individual audio clips which will make up the final audio track
-    Returns:
-        str: The generated subtitles
-    """
-
     def convert_to_srt_time_format(total_seconds):
         # Convert total seconds to the SRT time format: HH:MM:SS,mmm
         if total_seconds == 0:
@@ -42,20 +31,8 @@ def __generate_subtitles_locally(sentences: List[str], audio_clips: List[AudioFi
 
 
 def generate_subtitles(sentences: List[str], audio_clips: List[AudioFileClip], start_time: complex = 0) -> str:
-    """
-    Generates subtitles from a given audio file and returns the path to the subtitles.
-
-    Args:
-        audio_path (str): The path to the audio file to generate subtitles from.
-        sentences (List[str]): all the sentences said out loud in the audio clips
-        audio_clips (List[AudioFileClip]): all the individual audio clips which will make up the final audio track
-
-    Returns:
-        str: The path to the generated subtitles.
-    """
-
     # Save subtitles
-    subtitles_path = f"subtitles/{uuid.uuid4()}.srt"
+    subtitles_path = f"{config['TEMP_PATH']}/{uuid.uuid4()}.srt"
     subtitles = __generate_subtitles_locally(sentences, audio_clips, start_time)
 
     with open(subtitles_path, "w") as file:
@@ -68,26 +45,15 @@ def generate_subtitles(sentences: List[str], audio_clips: List[AudioFileClip], s
 
     return subtitles_path
 
-def generate_video(videoFileClip: VideoFileClip, imageClip: ImageClip, tts_path: str, subtitles_path: str) -> str:
-    """
-    This function creates the final video, with subtitles and audio.
-
-    Args:
-        video_path (str): The path to the combined video.
-        tts_path (str): The path to the text-to-speech audio.
-        subtitles_path (str): The path to the subtitles.
-
-    Returns:
-        str: The path to the final video.
-    """
+def generate_video(videoFileClip: VideoFileClip, imageClip: ImageClip, tts_path: str, subtitles_path: str, resultPath: str) -> None:
     # Make a generator that returns a TextClip when called with consecutive
     generator = lambda txt: TextClip(
         txt,
-        font="fonts/Roboto.ttf",
-        fontsize=36,
-        color="#FFFF00",
-        stroke_color="black",
-        stroke_width=2,
+        font=config['FONT_PATH'],
+        fontsize=config['FONT_SIZE'],
+        color=config['COLOR'],
+        stroke_color=config['STROKE_COLOR'],
+        stroke_width=config['STROKE_WIDTH'],
         method='caption',
         size=(0.75*617, None)
 
@@ -96,7 +62,7 @@ def generate_video(videoFileClip: VideoFileClip, imageClip: ImageClip, tts_path:
     # Burn the subtitles into the video
     subtitles = SubtitlesClip(subtitles_path, generator)
     result = CompositeVideoClip([
-        videoFileClip.set_fps(50),
+        videoFileClip.set_fps(config['TARGET_FPS']),
         imageClip,
         subtitles.set_pos(("center", "center"))
     ])
@@ -106,6 +72,4 @@ def generate_video(videoFileClip: VideoFileClip, imageClip: ImageClip, tts_path:
     audio = audio.set_duration(audio.duration - 0.15) # Fixes audio glitch at the end
     result = result.set_audio(audio)
 
-    result.write_videofile("output.mp4", threads=3)
-
-    return "output.mp4"
+    result.write_videofile(resultPath, threads=3)
