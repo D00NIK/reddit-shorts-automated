@@ -1,0 +1,7 @@
+.venv
+__pycache__
+tmp
+subtitles
+content.txt
+output.mp4
+video.mp4
