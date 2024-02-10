@@ -46,34 +46,34 @@ if __name__ == "__main__":
     print(f"{bcolors.OKCYAN}Generating preview image... {bcolors.OKGREEN}{bcolors.BOLD}DONE{bcolors.ENDC}")
 
     # Cleaning post from html and other garbage
+    # TODO: clean this code out, I leave it be for now
     text = removeHTMLTags(content).strip()
     sentences = text.replace('\n', '. ').strip().split(".")
     sentences = list(filter(lambda x: x != "", map(lambda x: x.strip(), sentences)))
     sentences.insert(0, title)
 
     print(f"{bcolors.OKCYAN}Rendering audio files...{bcolors.ENDC}")
-    paths = []
+    audioPaths = []
     # Generate TTS for every sentence
     for sentence in sentences:
         currentTTSPath = f"{config['TEMP_PATH']}/{uuid4()}.mp3"
         tts(sentence, config['TIKTOK_VOICE'], filename=currentTTSPath)
 
-        audioClip = AudioFileClip(currentTTSPath)
-        audioClip.audio_fadein(0.05).audio_fadeout(0.05) # Fixing audio glitches occuring every audio clip change
-        paths.append(audioClip)
+        # Fades fix audio glitches occuring almost every audio clip change
+        audioPaths.append(AudioFileClip(currentTTSPath).audio_fadein(0.05).audio_fadeout(0.05))
     print(f"{bcolors.OKCYAN}Rendering audio files... {bcolors.OKGREEN}{bcolors.BOLD}DONE{bcolors.ENDC}")
 
     # Generate subtitles
     print(f"{bcolors.OKCYAN}Rendering subtitles...{bcolors.ENDC}")
-    subtitlesPath = generateSubtitles(sentences, paths)
+    subtitlesPath = generateSubtitles(sentences, audioPaths)
     print(f"{bcolors.OKCYAN}Rendering subtitles... {bcolors.OKGREEN}{bcolors.BOLD}DONE{bcolors.ENDC}")
 
     print(f"{bcolors.OKCYAN}Rendering final video...{bcolors.ENDC}")
     # Adding all audios
-    finalAudio = concatenate_audioclips(paths)
+    finalAudio = concatenate_audioclips(audioPaths)
 
     # Preview as ImageClip
-    previewClip = ImageClip(previewPath).set_start(0).set_duration(paths[0].duration).set_position(("center", "center"))
+    previewClip = ImageClip(previewPath).set_start(0).set_duration(audioPaths[0].duration).set_position(("center", "center"))
     
     # Creating cropped clip video
     clip = VideoFileClip(config['BG_VIDEO_PATH'])
@@ -81,6 +81,7 @@ if __name__ == "__main__":
     clip = clip.subclip(num, num + finalAudio.duration)
 
     # Resizing to 9:16
+    # https://stackoverflow.com/a/74586686
     (w, h) = clip.size
     crop_width = h * 9/16
     x1, x2 = (w - crop_width)//2, (w+crop_width)//2
