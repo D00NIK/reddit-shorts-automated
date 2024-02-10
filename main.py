@@ -60,7 +60,7 @@ if __name__ == "__main__":
         tts(sentence, config['TIKTOK_VOICE'], filename=currentTTSPath)
 
         # Fades fix audio glitches occuring almost every audio clip change
-        audioPaths.append(AudioFileClip(currentTTSPath).audio_fadein(0.05).audio_fadeout(0.05))
+        audioPaths.append(AudioFileClip(currentTTSPath).audio_fadein(0.25).audio_fadeout(0.25))
     print(f"{bcolors.OKCYAN}Rendering audio files... {bcolors.OKGREEN}{bcolors.BOLD}DONE{bcolors.ENDC}")
 
     # Generate subtitles
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     y1, y2 = 0, h
     croppedClip = crop(clip, x1=x1, y1=y1, x2=x2, y2=y2)
 
-    generateVideo(croppedClip, finalAudio, previewClip, subtitlesPath, f"{config['OUTPUT_PATH']}/{title}.mp4" if config['OUTPUT_PATH'] != "" else f"{title}.mp4")
+    generateVideo(croppedClip, finalAudio, previewClip, subtitlesPath, f"{config['OUTPUT_FOLDER']}/{title}.mp4" if config['OUTPUT_FOLDER'] != "" else f"{title}.mp4")
     print(f"{bcolors.OKCYAN}Rendering final video... {bcolors.OKGREEN}{bcolors.BOLD}DONE{bcolors.ENDC}")
 
     # Clean temp afterwards
