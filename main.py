@@ -49,6 +49,7 @@ if __name__ == "__main__":
     text = removeHTMLTags(content).strip()
     sentences = text.replace('\n', '. ').strip().split(".")
     sentences = list(filter(lambda x: x != "", map(lambda x: x.strip(), sentences)))
+    sentences.insert(0, title)
 
     print(f"{bcolors.OKCYAN}Rendering audio files...{bcolors.ENDC}")
     paths = []
@@ -58,30 +59,21 @@ if __name__ == "__main__":
         tts(sentence, config['TIKTOK_VOICE'], filename=currentTTSPath)
 
         audioClip = AudioFileClip(currentTTSPath)
-        audioClip.audio_fadein(0.01).audio_fadeout(0.01) # Fixing audio glitches occuring every audio clip change
+        audioClip.audio_fadein(0.05).audio_fadeout(0.05) # Fixing audio glitches occuring every audio clip change
         paths.append(audioClip)
-
-    # Creating intro audio
-    introPath = f"{config['TEMP_PATH']}/{uuid4()}.mp3"
-    tts(title, config['TIKTOK_VOICE'], filename=introPath)
-    introAudio = AudioFileClip(introPath)
-    introAudio.audio_fadein(0.01).audio_fadeout(0.01) # For audio glitches
     print(f"{bcolors.OKCYAN}Rendering audio files... {bcolors.OKGREEN}{bcolors.BOLD}DONE{bcolors.ENDC}")
 
     # Generate subtitles
     print(f"{bcolors.OKCYAN}Rendering subtitles...{bcolors.ENDC}")
-    subtitlesPath = generate_subtitles(sentences, paths, introAudio.duration)
+    subtitlesPath = generateSubtitles(sentences, paths)
     print(f"{bcolors.OKCYAN}Rendering subtitles... {bcolors.OKGREEN}{bcolors.BOLD}DONE{bcolors.ENDC}")
 
-    # Adding all audios
     print(f"{bcolors.OKCYAN}Rendering final video...{bcolors.ENDC}")
-    paths.insert(0, introAudio)
-    finalAudioPath = f"{config['TEMP_PATH']}/{uuid4()}.mp3"
+    # Adding all audios
     finalAudio = concatenate_audioclips(paths)
-    finalAudio.write_audiofile(finalAudioPath)
 
     # Preview as ImageClip
-    previewClip = ImageClip(previewPath).set_start(0).set_duration(introAudio.duration).set_position(("center", "center"))
+    previewClip = ImageClip(previewPath).set_start(0).set_duration(paths[0].duration).set_position(("center", "center"))
     
     # Creating cropped clip video
     clip = VideoFileClip(config['BG_VIDEO_PATH'])
@@ -95,7 +87,7 @@ if __name__ == "__main__":
     y1, y2 = 0, h
     croppedClip = crop(clip, x1=x1, y1=y1, x2=x2, y2=y2)
 
-    generate_video(croppedClip, previewClip, finalAudioPath, subtitlesPath, f"{config['OUTPUT_PATH']}/{title}.mp4" if config['OUTPUT_PATH'] != "" else f"{title}.mp4")
+    generateVideo(croppedClip, finalAudio, previewClip, subtitlesPath, f"{config['OUTPUT_PATH']}/{title}.mp4" if config['OUTPUT_PATH'] != "" else f"{title}.mp4")
     print(f"{bcolors.OKCYAN}Rendering final video... {bcolors.OKGREEN}{bcolors.BOLD}DONE{bcolors.ENDC}")
 
     # Clean temp afterwards
