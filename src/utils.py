@@ -62,7 +62,6 @@ def humanFormat(num):
         num = num[0:-1] + '.' + num[-1] + 'k'
     return str(num)
 
-# https://teddit.zaggy.nl/r/AskReddit/comments/13x9sy7/now_that_reddit_are_killing_3rd_party_apps_on?api
 def relativeTime(date):
     """Take a datetime and return its "age" as a string.
 
