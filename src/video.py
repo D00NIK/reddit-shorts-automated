@@ -8,7 +8,7 @@ from datetime import timedelta
 from moviepy.video.fx.all import crop
 from moviepy.video.tools.subtitles import SubtitlesClip
 
-def __generate_subtitles_locally(sentences: List[str], audio_clips: List[AudioFileClip], start_time: complex = 0) -> str:
+def __generate_subtitles_locally(sentences: List[str], audio_clips: List[AudioFileClip], start_time: float = 0) -> str:
     def convert_to_srt_time_format(total_seconds):
         # Convert total seconds to the SRT time format: HH:MM:SS,mmm
         if total_seconds == 0:
@@ -30,7 +30,7 @@ def __generate_subtitles_locally(sentences: List[str], audio_clips: List[AudioFi
     return "\n".join(subtitles)
 
 
-def generate_subtitles(sentences: List[str], audio_clips: List[AudioFileClip], start_time: complex = 0) -> str:
+def generate_subtitles(sentences: List[str], audio_clips: List[AudioFileClip], start_time: float = 0) -> str:
     # Save subtitles
     subtitles_path = f"{config['TEMP_PATH']}/{uuid.uuid4()}.srt"
     subtitles = __generate_subtitles_locally(sentences, audio_clips, start_time)
@@ -39,7 +39,7 @@ def generate_subtitles(sentences: List[str], audio_clips: List[AudioFileClip], s
         file.write(subtitles + '\n') # Fixing last line not showing
 
     # Equalize subtitles
-    srt_equalizer.equalize_srt_file(subtitles_path, subtitles_path, 9999)
+    srt_equalizer.equalize_srt_file(subtitles_path, subtitles_path, 128)
 
     print("[+] Subtitles generated.")
 

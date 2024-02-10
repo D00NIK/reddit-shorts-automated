@@ -1,13 +1,12 @@
-
-BG_VIDEO_PATH: "../video.mp4"
+BG_VIDEO_PATH: "video.mp4"
 CLEAN_TEMP: true
-CUSTOM_CONTENT_PATH: "" # If specified, used instead of API post content
+CUSTOM_CONTENT_PATH: "content.txt" # If specified, used instead of API post content
 CUSTOM_TITLE: "" # If specified, used instead of API title
 OUTPUT_PATH: "" # If not specified, output will be in the main directory as a title
-PREVIEW_PATH: "../previews/preview.html" # To a file from which preview will be generated, you shouldn't change it
+PREVIEW_PATH: "previews/preview.html" # To a file from which preview will be generated, you shouldn't change it
 TARGET_FPS: 60
-TEDDIT_ENDPOINT: "https://teddit.zaggy.nl/r/stories/comments/196l3ak/my_exboyfriend_got_me_a_bottle_of_wine_for_my/?api" # API endpoint from which to gather information
-TEMP_PATH: "../tmp" # For files to be saved during the proccess
+TEDDIT_ENDPOINT: "https://teddit.zaggy.nl/r/stories/comments/1an6vil/today_i_f29_met_a_new_face_of_my_husband_m27_and?api" # API endpoint from which to gather information
+TEMP_PATH: "tmp" # For files to be saved during the proccess
 TIKTOK_VOICE: "en_au_001" # Choose one you want: https://github.com/Steve0929/tiktok-tts?tab=readme-ov-file#speaker-codes
   
 # Some font settings

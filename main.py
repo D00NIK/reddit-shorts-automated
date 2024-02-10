@@ -10,6 +10,7 @@ import os
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
+sys.path.append('src')
 
 from uuid import uuid4
 from moviepy.config import change_settings
@@ -31,7 +32,7 @@ if __name__ == "__main__":
 
     ## If not specified in config, use data from API
     title = config['CUSTOM_TITLE'] if config['CUSTOM_TITLE'] != "" else postData["title"]
-    content = config['CUSTOM_CONTENT_PATH'] if config['CUSTOM_CONTENT_PATH'] != "" else postData["selftext"]
+    content = getFileContent(config['CUSTOM_CONTENT_PATH']) if config['CUSTOM_CONTENT_PATH'] != "" else postData["selftext"]
 
     # Generating Image preview
     previewPath = genPreview({
@@ -88,7 +89,7 @@ if __name__ == "__main__":
     y1, y2 = 0, h
     croppedClip = crop(clip, x1=x1, y1=y1, x2=x2, y2=y2)
 
-    generate_video(croppedClip, previewClip, finalAudioPath, subtitlesPath, config['OUTPUT_PATH'] if config['OUTPUT_PATH'] != "" else f"../{title}.mp4")
+    generate_video(croppedClip, previewClip, finalAudioPath, subtitlesPath, f"{config['OUTPUT_PATH']}/{title}.mp4" if config['OUTPUT_PATH'] != "" else f"{title}.mp4")
 
     # Clean temp afterwards
     if config['CLEAN_TEMP']:
