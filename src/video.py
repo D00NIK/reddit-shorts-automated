@@ -24,7 +24,6 @@ def __generate_subtitles_locally(sentences: List[str], audio_clips: List[AudioFi
 
         # Format: subtitle index, start time --> end time, sentence
         subtitles.append(f"{i}\n{convert_to_srt_time_format(start_time)} --> {convert_to_srt_time_format(end_time)}\n{sentence}\n")
-
         start_time += duration  # Update start time for the next subtitle
 
     return "\n".join(subtitles)
@@ -39,9 +38,7 @@ def generate_subtitles(sentences: List[str], audio_clips: List[AudioFileClip], s
         file.write(subtitles + '\n') # Fixing last line not showing
 
     # Equalize subtitles
-    srt_equalizer.equalize_srt_file(subtitles_path, subtitles_path, 128)
-
-    print("[+] Subtitles generated.")
+    srt_equalizer.equalize_srt_file(subtitles_path, subtitles_path, 130)
 
     return subtitles_path
 

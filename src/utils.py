@@ -3,7 +3,18 @@ import os
 from lxml import etree
 from datetime import datetime, timedelta
 
+class bcolors:
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+
 def cleanDir(folder: str) -> None:
+    """
+    Deletes all files in a directory
+    https://stackoverflow.com/a/185941
+    """
+
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)
         try:
@@ -12,25 +23,39 @@ def cleanDir(folder: str) -> None:
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
-def removeHtmlTags(text):
+def removeHTMLTags(text: str) -> str:
+    """
+    Remove garbage html tags from a string
+    https://www.slingacademy.com/article/python-ways-to-remove-html-tags-from-a-string/
+    """
+
     parser = etree.HTMLParser()
     tree = etree.fromstring(text, parser)
     return etree.tostring(tree, encoding='unicode', method='text')
 
 def replaceAll(text: str, dic: dict) -> str:
-    """Replaces all occurences in a string from a dict"""
+    """
+    Replaces all occurences in a string from a dict
+    https://stackoverflow.com/a/6117042
+    """
 
     for i, j in dic.items():
         text = text.replace(i, j)
     return text
 
 def getFileContent(path: str) -> str:
+    """
+    Returns a file content as a string
+    """
+
     with open(path, "r") as f:
         data = f.read()
     return data
 
 def humanFormat(num):
-    """Numbers to more readable format, up to 1 milion"""
+    """
+    Numbers to a more readable format, up to 1 milion
+    """
     
     if (num >= 1000):
         num = str(int(num / 100))
@@ -46,6 +71,7 @@ def relativeTime(date):
     be returned.
 
     Make sure date is not in the future, or else it won't work.
+    https://jonlabelle.com/snippets/view/python/relative-time-in-python
     """
 
     def formatn(n, s):

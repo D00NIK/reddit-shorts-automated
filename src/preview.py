@@ -9,8 +9,11 @@ hti = Html2Image(output_path=config['TEMP_PATH'])
 with open(config['PREVIEW_PATH'], "r") as f:
         previewContent = f.read()
 
-# Generates image preview of a post or a comment, returns path to that file
 def genPreview(replacements: dict) -> str:
+    """
+    Generates image preview of a post or a comment, returns path to that file
+    """
+
     content = replaceAll(previewContent, replacements)
     filePath = f"{uuid4()}.png"
 
@@ -21,7 +24,11 @@ def genPreview(replacements: dict) -> str:
 
     return filePath
 
-# As suggested here https://github.com/vgalin/html2image/issues/91#issuecomment-1688750554
 def cropToContent(path) -> None:
+    """
+    Crops to content of an image as suggested here:
+    https://github.com/vgalin/html2image/issues/91#issuecomment-1688750554    
+    """
+
     img = Image.open(path)
     img.crop(img.getbbox()).save(path)

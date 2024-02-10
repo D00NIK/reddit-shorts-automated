@@ -10,7 +10,7 @@ TEMP_PATH: "tmp" # For files to be saved during the proccess
 TIKTOK_VOICE: "en_au_001" # Choose one you want: https://github.com/Steve0929/tiktok-tts?tab=readme-ov-file#speaker-codes
   
 # Some font settings
-FONT_PATH: "../fonts/Roboto.ttf"
+FONT_PATH: "fonts/Roboto.ttf"
 FONT_SIZE: 36
 COLOR: "#FFFF00"
 STROKE_COLOR: "black"
