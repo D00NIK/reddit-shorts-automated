@@ -1,7 +1,6 @@
 .venv
 __pycache__
 tmp
-subtitles
 content.txt
 *.mp4
 *.mp3

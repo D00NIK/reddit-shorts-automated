@@ -22,7 +22,7 @@ from video import *
 from utils import *
 
 if __name__ == "__main__":
-    response = requests.get(config['TEDDIT_ENDPOINT'])
+    response = requests.get(sys.argv[1] if len(sys.argv) > 1 else ['TEDDIT_ENDPOINT'])
 
     if (response.status_code != 200):
         print("ERROR: Cound not reach teddit API")
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     previewClip = ImageClip(previewPath).set_start(0).set_duration(audioPaths[0].duration).set_position(("center", "center"))
     
     # Creating cropped clip video
-    clip = VideoFileClip(config['BG_VIDEO_PATH'])
+    clip = VideoFileClip(config['BG_VIDEO_PATH']).without_audio()
     num = randint(10, int(clip.duration - finalAudio.duration - 10))
     clip = clip.subclip(num, num + finalAudio.duration)
 
