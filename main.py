@@ -57,7 +57,7 @@ if __name__ == "__main__":
     audioPaths = []
     # Generate TTS for every sentence
     for sentence in sentences:
-        currentTTSPath = f"{config['TEMP_PATH']}/{uuid4()}.mp3"
+        currentTTSPath = f"{config['TEMP_FOLDER']}/{uuid4()}.mp3"
         tts(sentence, config['TIKTOK_VOICE'], filename=currentTTSPath)
 
         # Fades fix audio glitches occuring almost every audio clip change
@@ -101,5 +101,5 @@ if __name__ == "__main__":
     # Clean temp afterwards
     if config['CLEAN_TEMP']:
         print(f"{bcolors.OKCYAN}Cleaning temp files...{bcolors.ENDC}")
-        cleanDir(config['TEMP_PATH'])
+        cleanDir(config['TEMP_FOLDER'])
         print(f"{bcolors.OKCYAN}Cleaning temp files... {bcolors.OKGREEN}{bcolors.BOLD}DONE{bcolors.ENDC}")

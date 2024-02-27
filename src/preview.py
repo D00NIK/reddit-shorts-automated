@@ -4,7 +4,7 @@ from PIL import Image
 from uuid import uuid4
 from config import config
 
-hti = Html2Image(output_path=config['TEMP_PATH'])
+hti = Html2Image(output_path=config['TEMP_FOLDER'])
 
 with open(config['PREVIEW_PATH'], "r") as f:
         previewContent = f.read()
@@ -18,7 +18,7 @@ def genPreview(replacements: dict) -> str:
     filePath = f"{uuid4()}.png"
 
     hti.screenshot(html_str=content, save_as=filePath)
-    filePath = f"{config['TEMP_PATH']}/{filePath}"
+    filePath = f"{config['TEMP_FOLDER']}/{filePath}"
 
     cropToContent(filePath)
 

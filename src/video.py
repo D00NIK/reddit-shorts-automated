@@ -33,7 +33,7 @@ def generateSubtitlesLocally(sentences: List[str], audioClips: List[AudioFileCli
 
 def generateSubtitles(sentences: List[str], audioClips: List[AudioFileClip]) -> str:
     # Save subtitles
-    subtitlesPath = f"{config['TEMP_PATH']}/{uuid.uuid4()}.srt"
+    subtitlesPath = f"{config['TEMP_FOLDER']}/{uuid.uuid4()}.srt"
     subtitles = generateSubtitlesLocally(sentences, audioClips)
 
     with open(subtitlesPath, "w") as file:
