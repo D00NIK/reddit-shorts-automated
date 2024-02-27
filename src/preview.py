@@ -4,7 +4,7 @@ from PIL import Image
 from uuid import uuid4
 from config import config
 
-hti = Html2Image(output_path=config['TEMP_FOLDER'])
+hti = Html2Image(output_path=config['TEMP_FOLDER'], browser_executable="/usr/bin/google-chrome-stable")
 
 with open(config['PREVIEW_PATH'], "r") as f:
         previewContent = f.read()

@@ -2,11 +2,11 @@ BG_VIDEO_PATH: "background.mp4"
 CLEAN_TEMP: false # Not advised when rendering many at once since it's just deleting everything from tmp (for now)
 CUSTOM_CONTENT_PATH: "" # If specified, used instead of API post content
 CUSTOM_TITLE: "" # If specified, used instead of API title
-OUTPUT_FOLDER: "results" # If not specified, output will be in the main directory as a title
+RESULTS_FOLDER: "results" # If not specified, output will be in the main directory as a title
 PREVIEW_PATH: "previews/preview.html" # To a file from which preview will be generated, you shouldn't change it
 SPEED_FACTOR: 1.1 # Final video is speed up by this factor
 TARGET_FPS: 60
-TEDDIT_ENDPOINT: "https://teddit.zaggy.nl/r/confessions/comments/1aqocr1/i_dumped_my_girlfriend_over_text_this_morning/?api" # API endpoint from which to gather information
+TEDDIT_ENDPOINT: "https://teddit.zaggy.nl/r/confession/comments/dju74z/i_run_a_fake_restaurant_on_a_delivery_app?api" # API endpoint from which to gather information
 TEMP_FOLDER: "tmp" # For files to be saved during the proccess
 TIKTOK_VOICE: "en_us_006" # Choose the one you want: https://github.com/Steve0929/tiktok-tts?tab=readme-ov-file#speaker-codes
   

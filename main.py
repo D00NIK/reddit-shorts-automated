@@ -26,7 +26,7 @@ if __name__ == "__main__":
     response = requests.get(sys.argv[1] if len(sys.argv) > 1 else config['TEDDIT_ENDPOINT'])
 
     if (response.status_code != 200):
-        print("ERROR: Cound not reach teddit API")
+        print(f"{bcolors.FAIL}{bcolors.BOLD}ERROR{bcolors.ENDC}: Cound not reach teddit API")
         sys.exit()
         
     postData = response.json()
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     y1, y2 = 0, h
     croppedClip = crop(clip, x1=x1, y1=y1, x2=x2, y2=y2)
 
-    finalVideo = generateVideo(croppedClip, finalAudio, previewClip, subtitlesPath, f"{config['OUTPUT_FOLDER']}/{title}.mp4" if config['OUTPUT_FOLDER'] != "" else f"{title}.mp4")
+    finalVideo = generateVideo(croppedClip, finalAudio, previewClip, subtitlesPath, f"{config['RESULTS_FOLDER']}/{title}.mp4")
     print(f"{bcolors.OKCYAN}Rendering final video... {bcolors.OKGREEN}{bcolors.BOLD}DONE{bcolors.ENDC}")
 
     if config['DIVIDE_INTO_PARTS']:

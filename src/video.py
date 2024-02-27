@@ -71,6 +71,7 @@ def generateVideo(videoClip: VideoClip, audioFileClip: AudioFileClip, imageClip:
 
     return VideoFileClip(resultPath)
 
+# This functionability isn't fully ended, you should change some things if you want to use it
 def divideIntoParts(videoClip: VideoClip, title: str):
     if (videoClip.duration <= config['MAX_VIDEO_LENGTH']):
         return False
@@ -108,7 +109,7 @@ def divideIntoParts(videoClip: VideoClip, title: str):
                 fadein(trailerText, fadeoutTextDuration)
             ])
 
-        videoPart.write_videofile(f"{config['OUTPUT_FOLDER']}/{title} - part {i+1}.mp4", threads=12)
+        videoPart.write_videofile(f"{config['RESULTS_FOLDER']}/{title} - part {i+1}.mp4", threads=12)
         currentTime = currentTime + clipDuration
 
     return True
