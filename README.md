@@ -4,8 +4,11 @@ A simple Python script to create those nasty short TikTok-like content. It trans
 **WARNING** this project is doomed. I'm not a good Python dev, but I've tried to do it as good as I can. It works though.
 
 ## Preview
-Example result:<br>
-![An example video output](https://github.com/D00NIK/reddit-shorts-automated/assets/65020944/bdfea7dc-1b3a-4037-bb8b-b51328b8be3e)
+Example result (bad quality cause compressed so I can show it here):<br>
+
+
+https://github.com/D00NIK/reddit-shorts-automated/assets/65020944/ef4ca784-37f1-4905-89a9-552bfc7bd058
+
 
 Example preview image:<br>
 ![An example preview image](examples/result.png "Example preview image")
