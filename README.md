@@ -29,15 +29,14 @@ pip install -r requirements.txt
 ```
 
 ## Usage
-Simply run the main file, you can optionally add in a teddit endpoint so it scrapes it instead of the one used in config file.
+Simply run the `main.py` file, you can optionally add in a teddit endpoint so it scrapes it instead of the one used in config file.
 ```sh
 python main.py "https://teddit.zaggy.nl/r/confession/comments/dju74z/i_run_a_fake_restaurant_on_a_delivery_app?api"
 
 # or if configured
 python main.py
 ```
-
-But you probably want to [configure it instead](https://github.com/D00NIK/reddit-shorts-automated#configuration).
+But you probably want to [configure it instead](https://github.com/D00NIK/reddit-shorts-automated?tab=readme-ov-file#configuration).
 
 ## Configuration
 You can change these in `config.yaml`
