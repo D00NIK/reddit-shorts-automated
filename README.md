@@ -40,19 +40,20 @@ But you probably want to [configure it instead](https://github.com/D00NIK/reddit
 
 ## Configuration
 You can change these in `config.yaml`
-| Variable            | Type   | Description                                                                                                                                    |
-|---------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| BG_VIDEO_PATH       | String | Path to a background video file                                                                                                                |
-| CLEAN_TEMP          | Bool   | Clean temp folder afterward                                                                                                                    |
-| CUSTOM_CONTENT_PATH | String | Path to a file containing content to be said in the video e.g. "content.txt"                                                                   |
-| CUSTOM_TITLE        | String | It'll use this title instead of the scraped one                                                                                                |
-| RESULTS_FOLDER      | String | Path to a folder in which to save results                                                                                                      |
-| PREVIEW_PATH        | String | Path to a template from which to render preview image                                                                                          |
-| SPEED_FACTOR        | Float  | Video is sped up by this factor                                                                                                                |
-| TARGET_FPS          | Int    | The result's target FPS                                                                                                                        |
-| TEDDIT_ENDPOINT     | String | API endpoint from which to gather Reddit post                                                                                                  |
-| TEMP_FOLDER         | String | Path to a folder in which to save temp files                                                                                                   |
-| TIKTOK_VOICE        | String | This project uses tiktok-tts, so you can here select a desired voice. https://github.com/Steve0929/tiktok-tts?tab=readme-ov-file#speaker-codes |
+| Variable                | Type   | Description                                                                                                                                    |
+|-------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| BG_VIDEO_PATH           | String | Path to a background video file                                                                                                                |
+| BROWSER_EXECUTABLE_PATH | String | Path to a (preferably) Google Chrome executable. Set it up if html2image throws an error.                                                      |
+| CLEAN_TEMP              | Bool   | Clean temp folder afterward                                                                                                                    |
+| CUSTOM_CONTENT_PATH     | String | Path to a file containing content to be said in the video e.g. "content.txt"                                                                   |
+| CUSTOM_TITLE            | String | It'll use this title instead of the scraped one                                                                                                |
+| RESULTS_FOLDER          | String | Path to a folder in which to save results                                                                                                      |
+| PREVIEW_PATH            | String | Path to a template from which to render preview image                                                                                          |
+| SPEED_FACTOR            | Float  | Video is sped up by this factor                                                                                                                |
+| TARGET_FPS              | Int    | The result's target FPS                                                                                                                        |
+| TEDDIT_ENDPOINT         | String | API endpoint from which to gather Reddit post                                                                                                  |
+| TEMP_FOLDER             | String | Path to a folder in which to save temp files                                                                                                   |
+| TIKTOK_VOICE            | String | This project uses tiktok-tts, so you can here select a desired voice. https://github.com/Steve0929/tiktok-tts?tab=readme-ov-file#speaker-codes |
 
 The rest options are font settings for subtitles and options for part division (which is not completed yet).
 
