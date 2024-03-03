@@ -40,27 +40,27 @@ But you probably want to [configure it instead](https://github.com/D00NIK/reddit
 
 ## Configuration
 You can change these in `config.yaml`
-| Variable                | Type   | Description                                                                                                                                    |
-|-------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| BG_VIDEO_PATH           | String | Path to a background video file                                                                                                                |
-| BROWSER_EXECUTABLE_PATH | String | Path to a (preferably) Google Chrome executable. Set it up if html2image throws an error.                                                      |
-| CLEAN_TEMP              | Bool   | Clean temp folder afterward                                                                                                                    |
-| CUSTOM_CONTENT_PATH     | String | Path to a file containing content to be said in the video e.g. "content.txt"                                                                   |
-| CUSTOM_TITLE            | String | It'll use this title instead of the scraped one                                                                                                |
-| RESULTS_FOLDER          | String | Path to a folder in which to save results                                                                                                      |
-| PREVIEW_PATH            | String | Path to a template from which to render preview image                                                                                          |
-| SPEED_FACTOR            | Float  | Video is sped up by this factor                                                                                                                |
-| TARGET_FPS              | Int    | The result's target FPS                                                                                                                        |
-| TEDDIT_ENDPOINT         | String | API endpoint from which to gather Reddit post                                                                                                  |
-| TEMP_FOLDER             | String | Path to a folder in which to save temp files                                                                                                   |
-| TIKTOK_VOICE            | String | This project uses tiktok-tts, so you can here select a desired voice. https://github.com/Steve0929/tiktok-tts?tab=readme-ov-file#speaker-codes |
+| Variable                | Type   | Description                                                                                                                    |
+|-------------------------|--------|--------------------------------------------------------------------------------------------------------------------------------|
+| BG_VIDEO_PATH           | String | Path to a background video file                                                                                                |
+| BROWSER_EXECUTABLE_PATH | String | Path to a (preferably) Google Chrome executable. Set it up if html2image throws an error.                                      |
+| CLEAN_TEMP              | Bool   | Clean temp folder afterward                                                                                                    |
+| CUSTOM_CONTENT_PATH     | String | Path to a file containing content to be said in the video e.g. "content.txt"                                                   |
+| CUSTOM_TITLE            | String | It'll use this title instead of the scraped one                                                                                |
+| RESULTS_FOLDER          | String | Path to a folder in which to save results                                                                                      |
+| PREVIEW_PATH            | String | Path to a template from which to render preview image                                                                          |
+| SPEED_FACTOR            | Float  | Video is sped up by this factor                                                                                                |
+| TARGET_FPS              | Int    | The result's target FPS                                                                                                        |
+| TEDDIT_ENDPOINT         | String | API endpoint from which to gather Reddit post                                                                                  |
+| TEMP_FOLDER             | String | Path to a folder in which to save temp files                                                                                   |
+| TIKTOK_VOICE            | String | This project uses tiktok-tts, so you can here select a desired voice. https://github.com/oscie57/tiktok-voice/wiki/Voice-Codes |
 
 The rest options are font settings for subtitles and options for part division (which is not completed yet).
 
 ## How it works in greater detail
 1. Grab info from any [teddit](https://github.com/teddit-net/teddit) API endpoint e.g. "https://teddit.zaggy.nl/r/confession/comments/dju74z/i_run_a_fake_restaurant_on_a_delivery_app?api".
 2. Using `previews/preview.html` and [html2image](https://github.com/vgalin/html2image) it generates a preview image. **WARNING** be sure to have a Google Chrome browser, as it's the only one working with it (at least for me).
-3. Clean and divide content text into renderable pieces by [tiktok-tts](https://github.com/Steve0929/tiktok-tts).
+3. Clean and divide content text into renderable pieces by [tiktok-voice-tts](https://github.com/Giooorgiooo/TikTok-Voice-TTS).
 4. Render audio files.
 5. Render subtitles and generate an SRT file with timestamps based on audio files duration and equalize them.
 6. Resize the background video to a 9:16 one and randomly cut it so it has the duration of all audio files combined.
